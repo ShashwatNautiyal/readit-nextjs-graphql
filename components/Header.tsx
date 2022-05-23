@@ -28,7 +28,7 @@ const Header = () => {
 	const { data: session } = useSession();
 
 	return (
-		<div className="flex items-center justify-between border-b h-16 pl-[57px] w-full sticky top-0 bg-white">
+		<div className="flex items-center justify-between border-b h-16 sm:pl-0 pl-[57px] w-full sticky top-0 bg-white">
 			<SignInModal modalOpen={signInModalOpen} setModalOpen={setSignInModalOpen} />
 			<CreatePostModal modalOpen={creatPostModalOpen} setModalOpen={setCreatPostModalOpen} />
 
