@@ -1,0 +1,199 @@
+type Comment {
+	created_at: DateTime
+	id: ID!
+	post_id: ID
+	text: String
+	username: String
+}
+
+type Post {
+	created_at: DateTime
+	description: String
+	id: ID!
+	media: String
+	subreddit_id: ID
+	title: String
+	username: String
+	votes: [Vote]
+		@materializer(query: "getVotesByPostId", arguments: [{ name: "post_id", field: "id" }])
+	comments: [Comment]
+		@materializer(query: "getCommentByPostId", arguments: [{ name: "post_id", field: "id" }])
+	subreddit: [Subreddit]
+		@materializer(
+			query: "getSubredditListById"
+			arguments: [{ name: "id", field: "subreddit_id" }]
+		)
+	topic: String!
+}
+
+type Subreddit {
+	created_at: DateTime
+	id: ID!
+	topic: String
+}
+
+type Vote {
+	created_at: DateTime
+	id: ID!
+	post_id: ID
+	upvote: Boolean!
+	username: String
+}
+
+type Query {
+	getCommentList: [Comment]
+		@dbquery(type: "postgresql", table: "comment", configuration: "postgresql_config")
+	"""
+	This query is an example of how to simply paginate your responses.
+	"""
+	getPaginatedCommentList(first: Int!, after: Int!): [Comment]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "comment" limit $1 offset $2
+			"""
+			configuration: "postgresql_config"
+		)
+	"""
+	In this example, a single query parameter is passed. If the request to the DB will
+	return at most one value you can remove the square brackets from the result.
+	"""
+	getCommentByPostId(post_id: ID!): [Comment]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "comment" where "post_id" = $1
+			         order by "comment"."created_at" desc
+			"""
+			configuration: "postgresql_config"
+		)
+	"""
+	In this example, two query parameters are passed. If the request to the DB will
+	return at most one value you can remove the square brackets from the result.
+	"""
+	getCommentByPost_idAndUsername(post_id: ID!, username: String!): [Comment]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "comment" where "post_id" = $1 and "username" = $2
+			"""
+			configuration: "postgresql_config"
+		)
+	getPostList: [Post]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "post"
+			         order by "post"."created_at" desc
+			"""
+			configuration: "postgresql_config"
+		)
+	getPostByPostId(id: ID!): Post
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "post"
+			         where "post"."id" = $1
+			"""
+			configuration: "postgresql_config"
+		)
+	getPostListBySubredditTopic(topic: String!): [Post]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select *, "post".id as id from "post"
+			         join "subreddit" on "subreddit"."id" = "post"."subreddit_id"
+			         where "subreddit"."topic" = $1
+			         order by "post"."created_at" desc
+			"""
+			configuration: "postgresql_config"
+		)
+	getSubredditListByTopic(topic: String!): [Subreddit]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "subreddit" where "topic" = $1
+			"""
+			configuration: "postgresql_config"
+		)
+	getSubredditListById(id: ID!): [Subreddit]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "subreddit" where "id" = $1
+			"""
+			configuration: "postgresql_config"
+		)
+	getSubredditList: [Subreddit]
+		@dbquery(type: "postgresql", table: "subreddit", configuration: "postgresql_config")
+	getVoteList: [Vote]
+		@dbquery(type: "postgresql", table: "vote", configuration: "postgresql_config")
+	getVotesByPostId(post_id: ID!): [Vote]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "vote" where "post_id" = $1
+			         order by "created_at" desc
+			"""
+			configuration: "postgresql_config"
+		)
+	getPostListByTopic(topic: String!): [Post]
+		@dbquery(
+			type: "postgresql"
+			query: """
+			select * from "post" where "topic" = $1
+			"""
+			configuration: "postgresql_config"
+		)
+}
+
+type Mutation {
+	"""
+	In this mutation example you can see how to do a mutation to insert data in the database.
+	"""
+	insertPost(
+		description: String!
+		media: String!
+		subreddit_id: ID!
+		title: String!
+		username: String!
+		topic: String!
+	): Post
+		@dbquery(type: "postgresql", table: "post", dml: INSERT, configuration: "postgresql_config")
+
+	"""
+	In this mutation example you can see how to do a mutation to insert data in the database.
+	"""
+	insertSubreddit(topic: String!): Subreddit
+		@dbquery(
+			type: "postgresql"
+			table: "subreddit"
+			dml: INSERT
+			configuration: "postgresql_config"
+		)
+
+	insetComment(post_id: ID!, text: String!, username: String!): Comment
+		@dbquery(
+			type: "postgresql"
+			table: "comment"
+			dml: INSERT
+			configuration: "postgresql_config"
+		)
+
+	insertVote(post_id: ID!, username: String!, upvote: Boolean!): Vote
+		@dbquery(type: "postgresql", table: "vote", dml: INSERT, configuration: "postgresql_config")
+
+	"""
+	In this mutation example you can see how to do a mutation to delete data from the database.
+	"""
+	deletePost(
+		id: ID!
+		description: String!
+		media: String!
+		created_at: DateTime!
+		subreddit_id: ID!
+		title: String!
+		username: String!
+	): Post
+		@dbquery(type: "postgresql", table: "post", dml: DELETE, configuration: "postgresql_config")
+}
