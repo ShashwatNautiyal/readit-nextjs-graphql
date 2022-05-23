@@ -16,10 +16,11 @@ const HomeContainer = ({ topicName }: { topicName?: string | string[] | undefine
 			},
 		}
 	);
+
 	const posts: Post[] | undefined =
 		topicName === "all" || !topicName
 			? getPostListData?.getPostList
-			: getPostListByTopicData?.getPostListByTopicData;
+			: getPostListByTopicData?.getPostListByTopic;
 	const isLoading = topicName === "all" || !topicName ? allPostLoading : allPostByTopicLoading;
 
 	return (
