@@ -7,19 +7,23 @@ import Loading from "./layout/Loading";
 import Feed from "./reusable/Feed";
 
 const HomeContainer = ({ topicName }: { topicName?: string | string[] | undefined }) => {
-	const { data, loading } =
-		topicName === "all" || !topicName
-			? useQuery(GET_ALL_POSTS)
-			: useQuery(GET_ALL_POSTS_BY_TOPIC, {
-					variables: {
-						topic: topicName,
-					},
-			  });
+	const { data: getPostListData, loading: allPostLoading } = useQuery(GET_ALL_POSTS);
+	const { data: getPostListByTopicData, loading: allPostByTopicLoading } = useQuery(
+		GET_ALL_POSTS_BY_TOPIC,
+		{
+			variables: {
+				topic: topicName,
+			},
+		}
+	);
 	const posts: Post[] | undefined =
-		topicName === "all" || !topicName ? data?.getPostList : data?.getPostListByTopic;
+		topicName === "all" || !topicName
+			? getPostListData?.getPostList
+			: getPostListByTopicData?.getPostListByTopicData;
+	const isLoading = topicName === "all" || !topicName ? allPostLoading : allPostByTopicLoading;
 
 	return (
-		<Loading isLoading={loading}>
+		<Loading isLoading={isLoading}>
 			<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto">
 				<div className="flex justify-between md:px-0 px-2">
 					<h1 className="text-xl capitalize">{topicName ? topicName : "All"}</h1>

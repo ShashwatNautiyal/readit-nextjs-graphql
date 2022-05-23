@@ -115,7 +115,7 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 					<div className="border-t border-gray-200 my-1 mx-4"></div>
 					<div className="mt-4">
 						{navigations.map((item) => (
-							<Menu.Item>
+							<Menu.Item key={item.name}>
 								{({ active }) => (
 									<Link key={item.name} href={`/${item.name.toLowerCase()}`}>
 										<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
@@ -139,7 +139,7 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 					<div className="border-t border-gray-200 my-1 mx-4"></div>
 					<div className="mt-4">
 						{subreddits?.map((item) => (
-							<Menu.Item>
+							<Menu.Item key={item.id}>
 								{({ active }) => (
 									<Link passHref key={item.id} href={`/subreddit/${item.topic}`}>
 										<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">

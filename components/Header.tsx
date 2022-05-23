@@ -144,7 +144,7 @@ const SignInModal = ({
 				</div>
 				<div className="mt-2">
 					<p className="text-sm text-gray-500">
-						Become a member - you'll enjoy the feed and the Reddits of others.
+						Become a member - you&apos;ll enjoy the feed and the Reddits of others.
 					</p>
 				</div>
 				<div className="w-full border-t border-gray-300 my-4" />
@@ -235,7 +235,7 @@ const SignInModal = ({
 					</div>
 					<div className="w-full border-t border-gray-300 my-2" />
 					<div className="text-sm text-center text-gray-500 font-medium">
-						Don't have an account?
+						Don&apos;t have an account?
 						<a
 							href="#"
 							className="ml-2 font-medium text-sm text-indigo-600 hover:text-indigo-500"
