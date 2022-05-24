@@ -27,7 +27,9 @@ const HomeContainer = ({ topicName }: { topicName?: string | string[] | undefine
 		<Loading isLoading={isLoading}>
 			<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto">
 				<div className="flex justify-between md:px-0 px-2">
-					<h1 className="text-xl capitalize">{topicName ? topicName : "All"}</h1>
+					<h1 className="text-xl capitalize font-semibold">
+						{topicName ? topicName : "All"}
+					</h1>
 					<div className="flex gap-2">
 						<BsGridFill className="h-6 w-6 cursor-pointer text-gray-200" />
 						<FaThList className="h-6 w-6 cursor-pointer text-gray-400" />

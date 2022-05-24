@@ -16,9 +16,15 @@ const Feed = ({
 }) => {
 	return (
 		<div className="w-full divide-y divide-gray-200 md:border border-t border-b md:mt-10 mt-5">
-			{posts?.map((post) => (
-				<FeedRow key={post.id} post={post} refetchQueries={refetchQueries} />
-			))}
+			{posts?.length !== 0 ? (
+				posts?.map((post) => (
+					<FeedRow key={post.id} post={post} refetchQueries={refetchQueries} />
+				))
+			) : (
+				<div>
+					<p className="p-7">Nothing Found</p>
+				</div>
+			)}
 		</div>
 	);
 };

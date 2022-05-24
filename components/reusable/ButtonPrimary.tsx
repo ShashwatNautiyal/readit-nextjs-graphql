@@ -3,6 +3,7 @@ import { classNames } from "../../utils";
 
 interface ButtonPrimaryProps {
 	size: "xsmall" | "small" | "medium" | "large";
+	type?: "button" | "submit" | "reset";
 	text: string;
 	onClick?: () => void;
 	disabled?: boolean;
@@ -12,10 +13,19 @@ interface ButtonPrimaryProps {
 }
 
 const ButtonPrimary = (props: ButtonPrimaryProps) => {
-	const { size, Icon, text, onClick, disabled = false, isLoading = false, customStyle } = props;
+	const {
+		size,
+		Icon,
+		text,
+		onClick,
+		disabled = false,
+		isLoading = false,
+		customStyle,
+		type,
+	} = props;
 	return (
 		<button
-			type="button"
+			type={type}
 			onClick={onClick}
 			style={customStyle}
 			disabled={disabled || isLoading}

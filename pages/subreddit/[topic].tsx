@@ -30,7 +30,7 @@ const Subreddit: NextPage = () => {
 							src={`https://avatars.dicebear.com/api/initials/${topic}.svg`}
 							alt=""
 						/>
-						<h1 className="text-xl">Welcome to r/{topic} subreddit</h1>
+						<h1 className="text-xl font-semibold">Welcome to r/{topic} subreddit</h1>
 					</div>
 					<div className="flex gap-2">
 						<BsGridFill className="h-6 w-6 cursor-pointer text-gray-200" />

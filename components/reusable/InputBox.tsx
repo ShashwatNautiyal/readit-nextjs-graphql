@@ -36,7 +36,7 @@ const InputBox = (props: InputBoxType) => {
 			<div className="mt-1 relative rounded-md shadow-sm border">
 				{textArea ? (
 					<textarea
-						rows={3}
+						rows={4}
 						name={name}
 						value={input}
 						onChange={(e) => setInput(e.target.value)}
