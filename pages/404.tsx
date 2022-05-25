@@ -10,7 +10,7 @@ const Error: NextPage = () => {
 				<h1 className="text-gray-800">404 error</h1>
 				<h2 className="md:text-5xl text-3xl font-semibold">Page not found...</h2>
 				<h3 className="text-gray-600 w-5/6 md:text-left text-center">
-					Sorry, the page you are looking for doesn't exist or has been moved.
+					Sorry, the page you are looking for doesn&apos;t exist or has been moved.
 				</h3>
 				<Link href={"/"} passHref>
 					<a>
