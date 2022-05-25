@@ -531,8 +531,10 @@ const CreatePostModal = ({
 			if (isUrlTab && !checkImage(imageUrl)) {
 				setError("Invalid Image URL!");
 				return;
-			} else if (!isUrlTab && !media) {
+			} else if (!media && !isUrlTab) {
 				setError("Please choose image!");
+				return;
+			} else if (!media || !checkImage(imageUrl)) {
 				return;
 			}
 
