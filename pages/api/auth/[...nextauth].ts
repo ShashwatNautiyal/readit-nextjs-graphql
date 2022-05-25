@@ -35,7 +35,6 @@ export default NextAuth({
 					password: credentials.password,
 				});
 
-				console.log(user, error);
 				if (user) {
 					return {
 						email: user.email,
