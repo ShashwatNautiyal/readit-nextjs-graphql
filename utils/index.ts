@@ -36,14 +36,17 @@ export const getAgoDate = (date: string | undefined): string => {
 	} else if (curr.getTime() - post.getTime() > 0) {
 		const timeCount = curr.getTime() - post.getTime();
 		if (timeCount / 1000 < 60) {
-			const display = (timeCount / 1000).toFixed(0);
-			return `${display} second${timeCount / 1000 > 1 ? "s" : ""} ago`;
+			return `${Math.floor(timeCount / 1000)} second${
+				Math.floor(timeCount / 1000) > 1 ? "s" : ""
+			} ago`;
 		} else if (timeCount / 60000 < 60) {
-			const display = (timeCount / 60000).toFixed(0);
-			return `${display} minute${timeCount / 60000 > 1 ? "s" : ""} ago`;
+			return `${Math.floor(timeCount / 60000)} minute${
+				Math.floor(timeCount / 60000) > 1 ? "s" : ""
+			} ago`;
 		} else if (timeCount / 3600000 < 60) {
-			const display = (timeCount / 3600000).toFixed(0);
-			return `${display} hour${timeCount / 3600000 > 1 ? "s" : ""} ago`;
+			return `${Math.floor(timeCount / 3600000)} hour${
+				Math.floor(timeCount / 3600000) > 1 ? "s" : ""
+			} ago`;
 		}
 	}
 

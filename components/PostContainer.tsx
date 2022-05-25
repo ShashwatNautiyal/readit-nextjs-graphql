@@ -63,6 +63,8 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 		});
 	};
 
+	const usersLiked = post?.votes.filter((post) => post.upvote === true);
+
 	return (
 		<Loading isLoading={loading}>
 			<div>
@@ -144,6 +146,38 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 									</time>
 								</div>
 								<h1 className="text-2xl">{post?.title}</h1>
+								<div className="flex items-center gap-2">
+									<div className="flex -space-x-1 relative z-0 overflow-hidden">
+										{usersLiked?.map((item, index) => (
+											<img
+												style={{
+													zIndex: `${1000 - index}`,
+												}}
+												className={`relative inline-block h-6 w-6 rounded-full ring-2 ring-white border bg-white`}
+												src={`https://avatars.dicebear.com/api/open-peeps/${item?.username}.svg`}
+												alt=""
+											/>
+										))}
+									</div>
+									{usersLiked && usersLiked.length > 0 && (
+										<h3 className="text-gray-800 text-sm">
+											Liked by{" "}
+											<span className="text-black font-medium">
+												{usersLiked[0].username}
+											</span>
+											{usersLiked.length > 1 && (
+												<>
+													{" "}
+													and{" "}
+													<span className="text-black font-medium">
+														{usersLiked.length - 1} other
+														{usersLiked.length - 1 > 1 ? "s" : ""}
+													</span>
+												</>
+											)}
+										</h3>
+									)}
+								</div>
 							</div>
 						</div>
 						<img
@@ -157,7 +191,9 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 				<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto px-2 flex flex-col md:gap-8 gap-4">
 					<div>
 						<h1 className="text-xl">Description</h1>
-						<pre className="mt-4 lg:w-5/6 w-full">{post?.description}</pre>
+						<h2 className="mt-4 lg:w-5/6 w-full whitespace-pre-line">
+							{post?.description}
+						</h2>
 					</div>
 
 					<div>
