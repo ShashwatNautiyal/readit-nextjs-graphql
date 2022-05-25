@@ -197,10 +197,12 @@ const SignInModal = ({
 	const [password, setPassword] = useState("");
 	const [passVisible, setPassVisible] = useState(false);
 	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSignIn = async (e: React.FormEvent<HTMLFormElement>) => {
 		setError("");
 		e.preventDefault();
+		setIsLoading(true);
 		// @ts-ignore
 		const res: { error: string | null; ok: boolean; status: number; url: string } =
 			await signIn("credentials", {
@@ -213,6 +215,7 @@ const SignInModal = ({
 		} else {
 			setSignInModalOpen(false);
 		}
+		setIsLoading(false);
 	};
 
 	return (
@@ -275,7 +278,7 @@ const SignInModal = ({
 					</a>
 				</div>
 
-				<ButtonPrimary type="submit" text="Sign in" size="large" />
+				<ButtonPrimary isLoading={isLoading} type="submit" text="Sign in" size="large" />
 
 				<div>
 					<div className="relative">
@@ -347,6 +350,7 @@ const SignUpModal = ({
 	const [rePassword, setRePassword] = useState("");
 	const [passVisible, setPassVisible] = useState(false);
 	const [error, setError] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	const handleSignUp = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
@@ -355,6 +359,7 @@ const SignUpModal = ({
 			setError("Either fields are missing or invalid");
 			return;
 		}
+		setIsLoading(true);
 		const { user, error } = await supabase.auth.signUp(
 			{
 				email,
@@ -372,6 +377,7 @@ const SignUpModal = ({
 			setSignUpModalOpen(false);
 			setSignInModalOpen(true);
 		}
+		setIsLoading(false);
 	};
 
 	return (
@@ -534,8 +540,6 @@ const CreatePostModal = ({
 			} else if (!media && !isUrlTab) {
 				setError("Please choose image!");
 				return;
-			} else if (!media || !checkImage(imageUrl)) {
-				return;
 			}
 
 			setIsLoading(true);
@@ -552,7 +556,7 @@ const CreatePostModal = ({
 
 			// Upload image to supabase storage
 			let publicURL: string | null = "";
-			if (!isUrlTab) {
+			if (media) {
 				publicURL = await supabase.storage
 					.from("reddit-2.0")
 					.upload(`post-images/${Math.random()}.${media.name.split(".").pop()}`, media)
