@@ -157,7 +157,7 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 				<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto px-2 flex flex-col md:gap-8 gap-4">
 					<div>
 						<h1 className="text-xl">Description</h1>
-						<h2 className="mt-4 lg:w-5/6 w-full">{post?.description}</h2>
+						<pre className="mt-4 lg:w-5/6 w-full">{post?.description}</pre>
 					</div>
 
 					<div>

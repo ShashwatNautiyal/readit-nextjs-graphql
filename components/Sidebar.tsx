@@ -48,7 +48,7 @@ const Sidebar = () => {
 				<h2 className="text-sm font-medium text-gray-700 px-4 mt-5">TOP COMMUNITIES</h2>
 				<div className="border-t border-gray-200 my-1 mx-4"></div>
 				<div className="mt-4">
-					{subreddits?.map((item) => (
+					{subreddits?.slice(0, 6)?.map((item) => (
 						<Link passHref key={item.id} href={`/subreddit/${item.topic}`}>
 							<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
 								<img
