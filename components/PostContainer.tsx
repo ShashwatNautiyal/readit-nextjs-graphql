@@ -150,6 +150,7 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 									<div className="flex -space-x-1 relative z-0 overflow-hidden">
 										{usersLiked?.map((item, index) => (
 											<img
+												key={item.id}
 												style={{
 													zIndex: `${1000 - index}`,
 												}}
