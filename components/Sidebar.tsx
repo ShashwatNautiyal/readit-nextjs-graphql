@@ -31,7 +31,7 @@ const Sidebar = () => {
 				<div className="border-t border-gray-200 my-1 mx-4"></div>
 				<div className="mt-4">
 					{navigations.map((item) => (
-						<Link key={item.name} href={`/${item.name.toLowerCase()}`}>
+						<Link key={item.name} href={item.href}>
 							<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
 								<img
 									src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg
@@ -154,7 +154,7 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 								<div className="border-t border-gray-200 my-1 mx-4"></div>
 								<div className="mt-4">
 									{navigations.map((item) => (
-										<Link key={item.name} href={`/${item.name.toLowerCase()}`}>
+										<Link key={item.name} href={item.href}>
 											<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
 												<img
 													src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
@@ -207,21 +207,27 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 const navigations = [
 	{
 		name: "All",
+		href: "/",
 	},
 	{
 		name: "Hot",
+		href: "/hot",
 	},
 	{
 		name: "New",
+		href: "/new",
 	},
 	{
 		name: "Controversial",
+		href: "/controversial",
 	},
 	{
 		name: "Rising",
+		href: "/rising",
 	},
 	{
 		name: "Top",
+		href: "/top",
 	},
 ];
 

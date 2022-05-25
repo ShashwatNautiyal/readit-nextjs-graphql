@@ -24,6 +24,7 @@ export const GET_ALL_POSTS = gql`
 			}
 			subreddit_id
 			username
+			topic
 			title
 			comments {
 				created_at

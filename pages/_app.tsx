@@ -6,10 +6,20 @@ import Sidebar from "../components/Sidebar";
 import { ApolloProvider } from "@apollo/client";
 import client from "../apollo-client";
 import { DefaultSeo } from "next-seo";
+import NextNProgress from "nextjs-progressbar";
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 	return (
 		<>
+			<NextNProgress
+				color="rgb(239, 68, 68)"
+				startPosition={0.1}
+				height={3}
+				showOnShallow={true}
+				options={{
+					showSpinner: false,
+				}}
+			/>
 			<DefaultSeo
 				defaultTitle="Readit"
 				titleTemplate="Readit | %s"

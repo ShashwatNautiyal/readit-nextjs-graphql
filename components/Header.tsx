@@ -891,7 +891,7 @@ const ValidImage = ({ imageUrl }: { imageUrl: string }) => {
 				};
 			}
 		}
-	}, [window, imageUrl]);
+	}, [global.window, imageUrl]);
 
 	return valid ? (
 		<img src={imageUrl} className={"h-full w-full rounded-md object-cover object-top"} />

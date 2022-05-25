@@ -6,6 +6,7 @@ const client = new ApolloClient({
 		Authorization: `Apikey ${process.env.NEXT_PUBLIC_STEPZEN_KEY}`,
 	},
 	cache: new InMemoryCache(),
+	ssrMode: true,
 });
 
 export default client;
