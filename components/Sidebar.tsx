@@ -82,7 +82,7 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 					<div className="fixed inset-0 bg-gray-600 bg-opacity-75" />
 				</Transition.Child>
 
-				<div className="fixed inset-0 flex z-40">
+				<div className="fixed inset-0 flex z-40 h-full">
 					<Transition.Child
 						as={Fragment}
 						enter="transition ease-in-out duration-300 transform"
@@ -92,7 +92,7 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 						leaveFrom="translate-x-0"
 						leaveTo="-translate-x-full"
 					>
-						<Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full pt-5 pb-4 bg-white">
+						<Dialog.Panel className="relative flex-1 flex flex-col max-w-xs w-full bg-white h-full">
 							<Transition.Child
 								as={Fragment}
 								enter="ease-in-out duration-300"
@@ -135,57 +135,63 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 									</button>
 								</div>
 							</Transition.Child>
-							<Link href={"/"} passHref>
-								<a className="flex items-center gap-2 px-4 py-6">
-									<img
-										className="w-12 h-w-12 rounded-full"
-										src="/logo.png"
-										alt=""
-									/>
-									<h1 className="font-semibold text-xl">
-										Read<span className="text-red-500">it</span>
-									</h1>
-								</a>
-							</Link>
-							<h2 className="text-sm font-medium text-gray-700 px-4 mt-5">
-								READIT POSTS
-							</h2>
-							<div className="border-t border-gray-200 my-1 mx-4"></div>
-							<div className="mt-4">
-								{navigations.map((item) => (
-									<Link key={item.name} href={`/${item.name.toLowerCase()}`}>
-										<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
-											<img
-												src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
-												className="h-6 w-6"
-											/>
+							<div className="overflow-y-auto">
+								<Link href={"/"} passHref>
+									<a className="flex items-center gap-2 px-4 py-3">
+										<img
+											className="w-12 h-w-12 rounded-full"
+											src="/logo.png"
+											alt=""
+										/>
+										<h1 className="font-semibold text-xl">
+											Read<span className="text-red-500">it</span>
+										</h1>
+									</a>
+								</Link>
+								<h2 className="text-sm font-medium text-gray-700 px-4 mt-5">
+									READIT POSTS
+								</h2>
+								<div className="border-t border-gray-200 my-1 mx-4"></div>
+								<div className="mt-4">
+									{navigations.map((item) => (
+										<Link key={item.name} href={`/${item.name.toLowerCase()}`}>
+											<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
+												<img
+													src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
+													className="h-6 w-6"
+												/>
 
-											<span className="font-semibold text-sm w-full">
-												{item.name}
-											</span>
-										</a>
-									</Link>
-								))}
-							</div>
+												<span className="font-semibold text-sm w-full">
+													{item.name}
+												</span>
+											</a>
+										</Link>
+									))}
+								</div>
 
-							<h2 className="text-sm font-medium text-gray-700 px-4 mt-5">
-								TOP COMMUNITIES
-							</h2>
-							<div className="border-t border-gray-200 my-1 mx-4"></div>
-							<div className="mt-4">
-								{subreddits?.map((item) => (
-									<Link passHref key={item.id} href={`/subreddit/${item.topic}`}>
-										<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
-											<img
-												src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
-												className="h-6 w-6 rounded-full border"
-											/>
-											<span className="font-semibold text-sm w-full">
-												r/{item.topic}
-											</span>
-										</a>
-									</Link>
-								))}
+								<h2 className="text-sm font-medium text-gray-700 px-4 mt-5">
+									TOP COMMUNITIES
+								</h2>
+								<div className="border-t border-gray-200 my-1 mx-4"></div>
+								<div className="mt-4">
+									{subreddits?.map((item) => (
+										<Link
+											passHref
+											key={item.id}
+											href={`/subreddit/${item.topic}`}
+										>
+											<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
+												<img
+													src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
+													className="h-6 w-6 rounded-full border"
+												/>
+												<span className="font-semibold text-sm w-full">
+													r/{item.topic}
+												</span>
+											</a>
+										</Link>
+									))}
+								</div>
 							</div>
 						</Dialog.Panel>
 					</Transition.Child>
