@@ -16,6 +16,7 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 	const [comment, setComment] = useState("");
 	const [commentOpen, setCommentOpen] = useState(false);
 	const { data: session } = useSession();
+	const [commentLoading, setCommentLoading] = useState(false);
 
 	const router = useRouter();
 
@@ -36,6 +37,7 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 
 	const handleComment = async () => {
 		if (!comment) return;
+		setCommentLoading(true);
 
 		await addComment({
 			variables: {
@@ -47,6 +49,7 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 
 		setCommentOpen(false);
 		setComment("");
+		setCommentLoading(false);
 	};
 
 	const isUpvoted = post?.votes.find((item) => item.username === session?.user?.name)?.upvote;
@@ -104,36 +107,7 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 					</div>
 					<div className="flex sm:flex-row flex-col justify-between w-full md:gap-6 gap-2 sm:mt-0 mt-4 sm:items-center lg:max-h-[200px] sm:max-h-[300px]">
 						<div className="flex gap-2 py-3">
-							<div className="sm:hidden flex items-center relative">
-								<div className="flex flex-col items-center">
-									<MdArrowDropUp
-										onClick={() => handleVote(true)}
-										className={`${
-											isUpvoted === true
-												? "text-green-600"
-												: "text-gray-300 hover:text-gray-400"
-										} h-10 w-10 cursor-pointer -my-2`}
-									/>
-									<h2 className="text-gray-500 -my-2">
-										{post?.votes.reduce((acc, curr) => {
-											if (curr.upvote) {
-												acc = acc + 1;
-											} else acc = acc - 1;
-											return acc;
-										}, 0)}
-									</h2>
-									<MdArrowDropDown
-										onClick={() => handleVote(false)}
-										className={`${
-											isUpvoted === false
-												? "text-red-600"
-												: "text-gray-300 hover:text-gray-400"
-										} h-10 w-10 cursor-pointer -my-2`}
-									/>
-									<div className="border-gray-200 border-r absolute right-0 top-0 bottom-0"></div>
-								</div>
-							</div>
-							<div className="flex flex-col justify-center items-start gap-3 sm:py-5 py-0">
+							<div className="flex flex-col justify-center items-start gap-3 sm:py-5 py-0 px-2">
 								<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
 									<img
 										className="h-6 w-6 rounded-full border"
@@ -230,11 +204,13 @@ const PostContainer = ({ id }: { id: string | string[] | undefined }) => {
 									<ButtonSecondry
 										size="xsmall"
 										text="Cancel"
+										disabled={commentLoading}
 										onClick={() => setCommentOpen(false)}
 									/>
 									<ButtonPrimary
 										size="xsmall"
 										text="Comment"
+										isLoading={commentLoading}
 										onClick={() => handleComment()}
 									/>
 								</div>

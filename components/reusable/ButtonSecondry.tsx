@@ -21,7 +21,7 @@ const ButtonSecondry = (props: ButtonSecondryProps) => {
 			disabled={disabled || isLoading}
 			className={classNames(
 				size === "xsmall"
-					? "py-0.5 px-1.5 min-w-min w-18"
+					? "py-0.5 px-1.5 min-w-min w-20"
 					: size === "small"
 					? "py-1.5 px-2 min-w-min w-24"
 					: size === "medium"
@@ -35,7 +35,7 @@ const ButtonSecondry = (props: ButtonSecondryProps) => {
 				<div className={"w-full flex justify-center items-center"}>
 					<div
 						style={{ borderTopColor: "transparent" }}
-						className="w-5 ml-1 h-5 border-4 border-darkblue-300 border-solid rounded-full animate-spin"
+						className="w-5 ml-1 h-5 border-4 border-red-500 border-solid rounded-full animate-spin"
 					></div>
 				</div>
 			) : (
