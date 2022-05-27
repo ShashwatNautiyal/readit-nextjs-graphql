@@ -19,7 +19,7 @@ const PostPage = ({ post }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
 			<NextSeo
-				title={`Post | ${capitalize(post.id)}`}
+				title={post.title}
 				canonical={`${process.env.NEXT_VERCEL_DOMAIN}/post/${post.id}`}
 			/>
 			<PostContainer post={post} />
@@ -53,7 +53,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 		props: {
 			post: getPostByPostId.getPostByPostId as Post,
 		},
-		revalidate: 10,
 	};
 };
 

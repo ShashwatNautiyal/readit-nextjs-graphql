@@ -46,7 +46,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 			topicName: params?.topicName,
 			posts: getPostListByTopic.getPostListByTopic as Post[],
 		},
-		revalidate: 10,
 	};
 };
 

@@ -17,7 +17,7 @@ type Post {
 	votes: [Vote]
 		@materializer(query: "getVotesByPostId", arguments: [{ name: "post_id", field: "id" }])
 	comments: [Comment]
-		@materializer(query: "getCommentByPostId", arguments: [{ name: "post_id", field: "id" }])
+		@materializer(query: "getCommentsByPostId", arguments: [{ name: "post_id", field: "id" }])
 	subreddit: [Subreddit]
 		@materializer(
 			query: "getSubredditListById"
@@ -58,7 +58,7 @@ type Query {
 	In this example, a single query parameter is passed. If the request to the DB will
 	return at most one value you can remove the square brackets from the result.
 	"""
-	getCommentByPostId(post_id: ID!): [Comment]
+	getCommentsByPostId(post_id: ID!): [Comment]
 		@dbquery(
 			type: "postgresql"
 			query: """
@@ -113,6 +113,7 @@ type Query {
 			type: "postgresql"
 			query: """
 			select * from "subreddit" where "topic" = $1
+			         order by "subreddit"."created_at" desc
 			"""
 			configuration: "postgresql_config"
 		)
@@ -172,7 +173,7 @@ type Mutation {
 			configuration: "postgresql_config"
 		)
 
-	insetComment(post_id: ID!, text: String!, username: String!): Comment
+	insertComment(post_id: ID!, text: String!, username: String!): Comment
 		@dbquery(
 			type: "postgresql"
 			table: "comment"

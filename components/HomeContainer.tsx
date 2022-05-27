@@ -21,7 +21,7 @@ const HomeContainer = (props: HomeProps) => {
 					<FaThList className="h-6 w-6 cursor-pointer text-gray-400" />
 				</div>
 			</div>
-			<Feed posts={posts} refetchQueries={[GET_ALL_POSTS, "getPostList"]} />
+			<Feed posts={posts} />
 		</div>
 	);
 };

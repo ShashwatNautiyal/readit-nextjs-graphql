@@ -18,9 +18,10 @@ import { useMutation, useQuery } from "@apollo/client";
 import { ADD_POST, ADD_SUBREDDIT } from "../graphql/mutations";
 import client from "../apollo-client";
 import { GET_ALL_POSTS, GET_ALL_SUBREDDIT, GET_SUBREDDIT_BY_TOPIC } from "../graphql/queries";
-import { classNames, supabase } from "../utils";
+import { classNames, revalidate, supabase } from "../utils";
 import Dropdown from "./reusable/Dropdown";
 import { useStore } from "../zustand";
+import { useRouter } from "next/router";
 
 const Header = () => {
 	const [signInModalOpen, setSignInModalOpen] = useState(false);
@@ -435,7 +436,7 @@ const SignUpModal = ({
 				/>
 				{error && <p className="text-sm text-red-700 -my-2">*{error}</p>}
 
-				<ButtonPrimary type="submit" text="Sign up" size="large" />
+				<ButtonPrimary isLoading={isLoading} type="submit" text="Sign up" size="large" />
 
 				<div>
 					<div className="relative">
@@ -514,6 +515,7 @@ const CreatePostModal = ({
 	}>();
 	const [selectedTopic, setSelectedTopic] = useState<{ value: string; imgUrl?: string }>();
 	const [isUrlTab, setIsUrlTab] = useState(false);
+	const router = useRouter();
 
 	const { data } = useQuery(GET_ALL_SUBREDDIT);
 
@@ -593,6 +595,12 @@ const CreatePostModal = ({
 						topic: selectedTopic?.value.toLowerCase(),
 					},
 				});
+				if (insertPost) {
+					revalidate(`/post/${insertPost.id}`);
+					revalidate(`/subreddit/${insertSubreddit.topic}`);
+					revalidate(`/topic/${selectedTopic?.value.toLowerCase()}`);
+					revalidate(`/`);
+				}
 			} else {
 				const {
 					data: { insertPost },
@@ -606,6 +614,13 @@ const CreatePostModal = ({
 						topic: selectedTopic?.value.toLowerCase(),
 					},
 				});
+				if (insertPost) {
+					revalidate(`/post/${insertPost.id}`);
+					revalidate(`/subreddit/${getSubredditListByTopic[0].topic}`);
+					revalidate(`/${selectedTopic?.value.toLowerCase()}`);
+					revalidate(`/`);
+					router.reload();
+				}
 			}
 			setModalOpen(false);
 		} catch (error) {

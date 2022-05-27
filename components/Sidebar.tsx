@@ -18,7 +18,7 @@ const Sidebar = () => {
 	return (
 		<>
 			<MobileMenu subreddits={subreddits} />
-			<div className="lg:w-[300px] md:w-[200px] md:block hidden bg-gray-100/30 border-r h-screen sticky top-0">
+			<div className="lg:w-[300px] md:w-[200px] md:block hidden bg-gray-100/30 border-r h-screen sticky top-0 overflow-y-auto">
 				<Link href={"/"} passHref>
 					<a className="flex items-center gap-2 px-4 py-6">
 						<img className="w-12 h-w-12 rounded-full" src="/logo.png" alt="" />
@@ -137,7 +137,10 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 							</Transition.Child>
 							<div className="overflow-y-auto">
 								<Link href={"/"} passHref>
-									<a className="flex items-center gap-2 px-4 py-3">
+									<a
+										onClick={() => setMenuOpen(false)}
+										className="flex items-center gap-2 px-4 py-3"
+									>
 										<img
 											className="w-12 h-w-12 rounded-full"
 											src="/logo.png"
@@ -155,7 +158,10 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 								<div className="mt-4">
 									{navigations.map((item) => (
 										<Link key={item.name} href={item.href}>
-											<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
+											<a
+												onClick={() => setMenuOpen(false)}
+												className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80"
+											>
 												<img
 													src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
 													className="h-6 w-6"
@@ -180,7 +186,10 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 											key={item.id}
 											href={`/subreddit/${item.topic}`}
 										>
-											<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
+											<a
+												onClick={() => setMenuOpen(false)}
+												className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80"
+											>
 												<img
 													src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
 													className="h-6 w-6 rounded-full border"

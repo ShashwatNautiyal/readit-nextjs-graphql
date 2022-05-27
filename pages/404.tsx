@@ -3,7 +3,6 @@ import { NextSeo } from "next-seo";
 import Link from "next/link";
 import React from "react";
 import ButtonPrimary from "../components/reusable/ButtonPrimary";
-import { capitalize } from "../utils";
 
 const Error: NextPage = () => {
 	return (

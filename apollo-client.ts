@@ -7,6 +7,7 @@ const client = new ApolloClient({
 	},
 	cache: new InMemoryCache(),
 	ssrMode: true,
+	ssrForceFetchDelay: 500,
 });
 
 export default client;

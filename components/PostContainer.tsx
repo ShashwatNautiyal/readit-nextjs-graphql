@@ -5,9 +5,12 @@ import React, { useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdArrowDropDown, MdArrowDropUp, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ADD_COMMENT, ADD_VOTE } from "../graphql/mutations";
-import { GET_POST_BY_POST_ID } from "../graphql/queries";
-import { getAgoDate } from "../utils";
-import Loading from "./layout/Loading";
+import {
+	GET_COMMENTS_BY_POST_ID,
+	GET_POST_BY_POST_ID,
+	GET_VOTES_BY_POST_ID,
+} from "../graphql/queries";
+import { getAgoDate, revalidate } from "../utils";
 import ButtonPrimary from "./reusable/ButtonPrimary";
 import ButtonSecondry from "./reusable/ButtonSecondry";
 import InputBox from "./reusable/InputBox";
@@ -20,19 +23,44 @@ const PostContainer = ({ post }: { post: Post }) => {
 
 	const router = useRouter();
 
+	const { data: getVotesByPostId, loading: isVotesLoading } = useQuery(GET_VOTES_BY_POST_ID, {
+		variables: {
+			post_id: post.id,
+		},
+	});
+
+	const { data: getCommentsByPostId, loading: isCommentsLoading } = useQuery(
+		GET_COMMENTS_BY_POST_ID,
+		{
+			variables: {
+				post_id: post.id,
+			},
+		}
+	);
+
 	const [addComment] = useMutation(ADD_COMMENT, {
-		refetchQueries: [GET_POST_BY_POST_ID, "getPostByPostId"],
+		refetchQueries: [GET_COMMENTS_BY_POST_ID, "getCommentsByPostId"],
 	});
 
 	const [addVote] = useMutation(ADD_VOTE, {
-		refetchQueries: [GET_POST_BY_POST_ID, "getPostByPostId"],
+		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
 	});
 
-	const handleComment = async () => {
+	const votes: Vote[] | undefined = isVotesLoading
+		? post.votes
+		: getVotesByPostId?.getVotesByPostId;
+	const comments: Comments[] | undefined = isCommentsLoading
+		? post.comments
+		: getCommentsByPostId?.getCommentsByPostId;
+
+	const isUpvoted = votes?.find((item) => item.username === session?.user?.name)?.upvote;
+
+	const handleComment = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		if (!comment) return;
 		setCommentLoading(true);
 
-		await addComment({
+		const { data, errors } = await addComment({
 			variables: {
 				post_id: post.id,
 				username: session?.user?.name,
@@ -40,26 +68,37 @@ const PostContainer = ({ post }: { post: Post }) => {
 			},
 		});
 
+		if (data) {
+			revalidate(`/post/${post.id}`);
+		}
+
 		setCommentOpen(false);
 		setComment("");
 		setCommentLoading(false);
 	};
 
-	const isUpvoted = post?.votes.find((item) => item.username === session?.user?.name)?.upvote;
-
 	const handleVote = async (isUpvote: boolean) => {
 		if (!session || isUpvoted) return;
 
-		await addVote({
+		const { data } = await addVote({
 			variables: {
 				post_id: post?.id,
 				username: session?.user?.name,
 				upvote: isUpvote,
 			},
 		});
+
+		if (data) {
+			revalidate(`/post/${post.id}`);
+			revalidate(`/subreddit/${post.subreddit[0].topic}`);
+			revalidate(`/${post.topic}`);
+			revalidate(`/`);
+		}
 	};
 
-	const usersLiked = post?.votes.filter((post) => post.upvote === true);
+	const usersLiked = isVotesLoading
+		? post.votes?.filter((post) => post.upvote === true)
+		: votes?.filter((post) => post.upvote === true);
 
 	return (
 		<div>
@@ -79,7 +118,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 							} h-10 w-10 cursor-pointer`}
 						/>
 						<h2 className="text-gray-500 -my-2">
-							{post?.votes.reduce((acc, curr) => {
+							{votes?.reduce((acc, curr) => {
 								if (curr.upvote) {
 									acc = acc + 1;
 								} else acc = acc - 1;
@@ -165,7 +204,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 
 				<div>
 					<div className="flex items-center gap-4">
-						<h1 className="text-xl">Comments ({post?.comments.length})</h1>
+						<h1 className="text-xl">Comments ({comments?.length})</h1>
 						<ButtonPrimary
 							onClick={() => setCommentOpen(true)}
 							text="Leave Comment"
@@ -175,7 +214,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 					</div>
 
 					{commentOpen && (
-						<div className="my-3 flex flex-col gap-1">
+						<form onSubmit={handleComment} className="my-3 flex flex-col gap-1">
 							<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
 								<img
 									className="h-6 w-6 rounded-full border"
@@ -203,15 +242,15 @@ const PostContainer = ({ post }: { post: Post }) => {
 									size="xsmall"
 									text="Comment"
 									isLoading={commentLoading}
-									onClick={() => handleComment()}
+									type="submit"
 								/>
 							</div>
-						</div>
+						</form>
 					)}
 
 					{/* Comments */}
 
-					{post?.comments.map((item) => (
+					{comments?.map((item) => (
 						<div key={item.id} className="flex mt-6 md:gap-2">
 							<div className="-mt-3 -ml-2">
 								<MdArrowDropUp className="h-8 w-8 -mb-4 text-gray-300" />

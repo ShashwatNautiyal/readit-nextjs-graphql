@@ -40,7 +40,7 @@ export const ADD_SUBREDDIT = gql`
 
 export const ADD_COMMENT = gql`
 	mutation addComment($post_id: ID!, $username: String!, $text: String!) {
-		insetComment(post_id: $post_id, text: $text, username: $username) {
+		insertComment(post_id: $post_id, text: $text, username: $username) {
 			created_at
 			id
 			post_id

@@ -19,7 +19,7 @@ const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	);
 };
 
-export const getStaticProps = async ({}: GetStaticPropsContext) => {
+export const getStaticProps = async () => {
 	const { data: getPostList } = await client.query({
 		query: GET_ALL_POSTS,
 	});
@@ -28,7 +28,6 @@ export const getStaticProps = async ({}: GetStaticPropsContext) => {
 		props: {
 			posts: getPostList.getPostList as Post[],
 		},
-		revalidate: 10,
 	};
 };
 

@@ -34,13 +34,7 @@ const Subreddit = ({ posts, topic }: InferGetStaticPropsType<typeof getStaticPro
 						<FaThList className="h-6 w-6 cursor-pointer text-gray-400" />
 					</div>
 				</div>
-				<Feed
-					posts={posts}
-					refetchQueries={[
-						GET_ALL_POSTS_BY_SUBREDDIT_TOPIC,
-						"getPostListBySubredditTopic",
-					]}
-				/>
+				<Feed posts={posts} />
 			</div>
 		</>
 	);
@@ -73,7 +67,6 @@ export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
 			topic: params?.topic,
 			posts: getPostListBySubredditTopic.getPostListBySubredditTopic as Post[],
 		},
-		revalidate: 10,
 	};
 };
 
