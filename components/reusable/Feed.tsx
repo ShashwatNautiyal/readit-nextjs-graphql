@@ -1,7 +1,7 @@
 import { DocumentNode, useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import { ADD_VOTE } from "../../graphql/mutations";
@@ -27,6 +27,8 @@ const FeedRow = ({ post }: { post: Post }) => {
 	const [addVote] = useMutation(ADD_VOTE, {
 		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
 	});
+
+	const timeRef = useRef(getAgoDate(post.created_at));
 
 	const { data: getVotesByPostId, loading: isLoading } = useQuery(GET_VOTES_BY_POST_ID, {
 		variables: {
@@ -121,7 +123,7 @@ const FeedRow = ({ post }: { post: Post }) => {
 									alt=""
 								/>
 								<h3 className="text-red-500">{post.username}</h3>
-								<time className="text-gray-400">{getAgoDate(post.created_at)}</time>
+								<time className="text-gray-400">{timeRef.current}</time>
 							</div>
 						</div>
 					</div>
