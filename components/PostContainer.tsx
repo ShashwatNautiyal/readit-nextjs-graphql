@@ -1,5 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -14,7 +15,7 @@ import { getAgoDate, revalidate } from "../utils";
 import ButtonPrimary from "./reusable/ButtonPrimary";
 import ButtonSecondry from "./reusable/ButtonSecondry";
 import InputBox from "./reusable/InputBox";
-import TimeAgo from "./reusable/TimeAgo";
+const TimeAgo = dynamic(() => import("./reusable/TimeAgo"), { ssr: false });
 
 const PostContainer = ({ post }: { post: Post }) => {
 	const [comment, setComment] = useState("");
@@ -269,7 +270,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 										src={`https://avatars.dicebear.com/api/open-peeps/${item?.username}.svg`}
 										alt=""
 									/>
-									<h3 className="text-red-500">{item?.username}</h3>
+									<h2 className="text-red-500">{item?.username}</h2>
 									<TimeAgo time={post.created_at} />
 								</div>
 								<h3 className="text-gray-700">{item.text}</h3>

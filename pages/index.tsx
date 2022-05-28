@@ -22,7 +22,7 @@ const Home = ({ posts }: InferGetStaticPropsType<typeof getStaticProps>) => {
 					site_name: "Readit",
 					images: [
 						{
-							url: DOMAIN,
+							url: `${DOMAIN}/logo.png`,
 							width: 512,
 							height: 512,
 							alt: "Readit logo",

@@ -14,9 +14,19 @@ import { capitalize, DOMAIN } from "../../utils";
 const Subreddit = ({ posts, topic }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
+			<NextSeo canonical={`${DOMAIN}/subreddit/${topic}`} />
 			<NextSeo
 				title={`Subreddit | ${capitalize(topic as string)}`}
 				canonical={`${DOMAIN}/subreddit/${topic}`}
+				openGraph={{
+					url: `${DOMAIN}/subreddit/${topic}`,
+					title: `Topic | ${capitalize(topic as string)}`,
+					images: [
+						{
+							url: `https://avatars.dicebear.com/api/bottts/${topic}.svg`,
+						},
+					],
+				}}
 			/>
 
 			<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto">

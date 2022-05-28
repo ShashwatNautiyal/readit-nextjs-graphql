@@ -16,8 +16,17 @@ const TopicsPage = ({ posts, topicName }: InferGetStaticPropsType<typeof getStat
 	return (
 		<>
 			<NextSeo
-				title={`${capitalize(topicName as string)}`}
-				canonical={`${DOMAIN}/${topicName}`}
+				title={`Topic | ${capitalize(topicName as string)}`}
+				canonical={`${DOMAIN}/subreddit/${topicName}`}
+				openGraph={{
+					url: `${DOMAIN}/subreddit/${topicName}`,
+					title: `Topic | ${capitalize(topicName as string)}`,
+					images: [
+						{
+							url: `https://avatars.dicebear.com/api/initials/${topicName}.svg`,
+						},
+					],
+				}}
 			/>
 			<HomeContainer posts={posts} topicName={topicName} />
 		</>

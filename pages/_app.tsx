@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }: AppProps) {
 				}}
 				twitter={{
 					handle: "@shashwatnauti",
-					site: "@Readit",
+					site: "@shashwatnauti",
 					cardType: "summary_large_image",
 				}}
 				facebook={{

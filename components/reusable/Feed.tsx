@@ -1,5 +1,6 @@
 import { DocumentNode, useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -7,7 +8,7 @@ import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import { ADD_VOTE } from "../../graphql/mutations";
 import { GET_VOTES_BY_POST_ID } from "../../graphql/queries";
 import { getAgoDate, revalidate } from "../../utils";
-import TimeAgo from "./TimeAgo";
+const TimeAgo = dynamic(() => import("./TimeAgo"), { ssr: false });
 
 const Feed = ({ posts }: { posts: Post[] | undefined }) => {
 	return (

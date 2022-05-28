@@ -12,7 +12,7 @@ export function classNames(...classes: string[]) {
 
 export const capitalize = (name: string) => {
 	if (!name) {
-		return null;
+		return "";
 	}
 	return name
 		.split(" ")

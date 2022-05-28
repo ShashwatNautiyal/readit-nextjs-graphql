@@ -7,7 +7,7 @@ import {
 	InferGetStaticPropsType,
 	NextPage,
 } from "next";
-import { NextSeo } from "next-seo";
+import { ArticleJsonLd, NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import React from "react";
 import client from "../../apollo-client";
@@ -18,7 +18,38 @@ import { capitalize, DOMAIN } from "../../utils";
 const PostPage = ({ post }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
-			<NextSeo title={post.title} canonical={`${DOMAIN}/post/${post.id}`} />
+			<NextSeo
+				title={post.title}
+				canonical={`${DOMAIN}/post/${post.id}`}
+				description={post.description.substring(0, 170)}
+				openGraph={{
+					type: "article",
+					url: `${DOMAIN}/post/${post.id}`,
+					title: post.title,
+					description: post.description,
+					images: [
+						{
+							url: post.media,
+						},
+					],
+					article: {
+						publishedTime: post.created_at,
+						authors: [post.username],
+						modifiedTime: post.created_at,
+						tags: [post.title, post.topic],
+					},
+				}}
+			/>
+			<ArticleJsonLd
+				type="Blog"
+				url={`${DOMAIN}/post/${post.id}`}
+				title={`${post.title}`}
+				images={[post.media]}
+				datePublished={post.created_at}
+				dateModified={post.created_at}
+				authorName={post.username}
+				description={post.description}
+			/>
 			<PostContainer post={post} />
 		</>
 	);
