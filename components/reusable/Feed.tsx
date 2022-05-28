@@ -7,6 +7,7 @@ import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import { ADD_VOTE } from "../../graphql/mutations";
 import { GET_VOTES_BY_POST_ID } from "../../graphql/queries";
 import { getAgoDate, revalidate } from "../../utils";
+import TimeAgo from "./TimeAgo";
 
 const Feed = ({ posts }: { posts: Post[] | undefined }) => {
 	return (
@@ -27,8 +28,6 @@ const FeedRow = ({ post }: { post: Post }) => {
 	const [addVote] = useMutation(ADD_VOTE, {
 		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
 	});
-
-	const timeRef = useRef(getAgoDate(post.created_at));
 
 	const { data: getVotesByPostId, loading: isLoading } = useQuery(GET_VOTES_BY_POST_ID, {
 		variables: {
@@ -123,7 +122,7 @@ const FeedRow = ({ post }: { post: Post }) => {
 									alt=""
 								/>
 								<h3 className="text-red-500">{post.username}</h3>
-								<time className="text-gray-400">{timeRef.current}</time>
+								<TimeAgo time={post.created_at} />
 							</div>
 						</div>
 					</div>

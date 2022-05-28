@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdArrowDropDown, MdArrowDropUp, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ADD_COMMENT, ADD_VOTE } from "../graphql/mutations";
@@ -14,12 +14,14 @@ import { getAgoDate, revalidate } from "../utils";
 import ButtonPrimary from "./reusable/ButtonPrimary";
 import ButtonSecondry from "./reusable/ButtonSecondry";
 import InputBox from "./reusable/InputBox";
+import TimeAgo from "./reusable/TimeAgo";
 
 const PostContainer = ({ post }: { post: Post }) => {
 	const [comment, setComment] = useState("");
 	const [commentOpen, setCommentOpen] = useState(false);
 	const { data: session } = useSession();
 	const [commentLoading, setCommentLoading] = useState(false);
+	const inputRef = useRef<HTMLInputElement>(null);
 
 	const router = useRouter();
 
@@ -146,9 +148,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 									alt=""
 								/>
 								<h3 className="text-red-500">{post?.username}</h3>
-								<time className="text-gray-400">
-									{getAgoDate(post?.created_at)}
-								</time>
+								<TimeAgo time={post.created_at} />
 							</div>
 							<h1 className="text-2xl">{post?.title}</h1>
 							<div className="flex items-center gap-2">
@@ -206,7 +206,12 @@ const PostContainer = ({ post }: { post: Post }) => {
 					<div className="flex items-center gap-4">
 						<h1 className="text-xl">Comments ({comments?.length})</h1>
 						<ButtonPrimary
-							onClick={() => setCommentOpen(true)}
+							onClick={() => {
+								setCommentOpen(true);
+								setTimeout(() => {
+									inputRef.current?.focus();
+								}, 100);
+							}}
 							text="Leave Comment"
 							disabled={!session}
 							size="small"
@@ -224,6 +229,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 								<h3 className="text-red-500">{session?.user?.name}</h3>
 							</div>
 							<InputBox
+								refInput={inputRef}
 								input={comment}
 								label=""
 								placeholder="Leave a comment here"
@@ -264,9 +270,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 										alt=""
 									/>
 									<h3 className="text-red-500">{item?.username}</h3>
-									<time className="text-gray-400">
-										{getAgoDate(item?.created_at)}
-									</time>
+									<TimeAgo time={post.created_at} />
 								</div>
 								<h3 className="text-gray-700">{item.text}</h3>
 								<div className="flex gap-6 text-sm">
