@@ -9,14 +9,14 @@ import client from "../../apollo-client";
 import Loading from "../../components/layout/Loading";
 import Feed from "../../components/reusable/Feed";
 import { GET_ALL_POSTS_BY_SUBREDDIT_TOPIC, GET_ALL_SUBREDDIT } from "../../graphql/queries";
-import { capitalize } from "../../utils";
+import { capitalize, DOMAIN } from "../../utils";
 
 const Subreddit = ({ posts, topic }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
 			<NextSeo
 				title={`Subreddit | ${capitalize(topic as string)}`}
-				canonical={`${process.env.NEXT_VERCEL_DOMAIN}/subreddit/${topic}`}
+				canonical={`${DOMAIN}/subreddit/${topic}`}
 			/>
 
 			<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto">

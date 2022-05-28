@@ -13,15 +13,12 @@ import React from "react";
 import client from "../../apollo-client";
 import PostContainer from "../../components/PostContainer";
 import { GET_ALL_POSTS, GET_POST_BY_POST_ID } from "../../graphql/queries";
-import { capitalize } from "../../utils";
+import { capitalize, DOMAIN } from "../../utils";
 
 const PostPage = ({ post }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
-			<NextSeo
-				title={post.title}
-				canonical={`${process.env.NEXT_VERCEL_DOMAIN}/post/${post.id}`}
-			/>
+			<NextSeo title={post.title} canonical={`${DOMAIN}/post/${post.id}`} />
 			<PostContainer post={post} />
 		</>
 	);

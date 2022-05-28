@@ -55,15 +55,20 @@ export const getAgoDate = (date: string | undefined): string => {
 };
 
 export const revalidate = async (path: string) => {
-	console.log(process.env.NEXT_PUBLIC_VERCEL_URL);
-	const { data } = await axios.get(
-		`https://${process.env.NEXT_PUBLIC_VERCEL_URL}/api/revalidate`,
-		{
-			params: {
-				secret: process.env.NEXT_PUBLIC_REVALIDATE_TOKEN,
-				path: path,
-			},
-		}
+	console.log(
+		process.env.NEXT_PUBLIC_VERCEL_URL,
+		process.env.NODE_ENV,
+		process.env.NEXT_PUBLIC_VERCEL_ENV
 	);
+	const { data } = await axios.get(`${DOMAIN}/api/revalidate`, {
+		params: {
+			secret: process.env.NEXT_PUBLIC_REVALIDATE_TOKEN,
+			path: path,
+		},
+	});
 	console.log(data);
 };
+
+export const DOMAIN = process.env.NEXT_PUBLIC_VERCEL_ENV
+	? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+	: "http://localhost:3000";

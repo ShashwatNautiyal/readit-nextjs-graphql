@@ -10,14 +10,14 @@ import React from "react";
 import client from "../apollo-client";
 import HomeContainer from "../components/HomeContainer";
 import { GET_ALL_POSTS_BY_TOPIC } from "../graphql/queries";
-import { capitalize } from "../utils";
+import { capitalize, DOMAIN } from "../utils";
 
 const TopicsPage = ({ posts, topicName }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
 			<NextSeo
 				title={`${capitalize(topicName as string)}`}
-				canonical={`${process.env.NEXT_VERCEL_DOMAIN}/${topicName}`}
+				canonical={`${DOMAIN}/${topicName}`}
 			/>
 			<HomeContainer posts={posts} topicName={topicName} />
 		</>

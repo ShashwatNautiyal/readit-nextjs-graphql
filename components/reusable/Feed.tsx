@@ -50,7 +50,6 @@ const FeedRow = ({ post }: { post: Post }) => {
 		});
 
 		if (data) {
-			console.log(post);
 			revalidate(`/post/${post.id}`);
 			revalidate(`/subreddit/${post.subreddit[0].topic}`);
 			revalidate(`/${post.topic}`);
