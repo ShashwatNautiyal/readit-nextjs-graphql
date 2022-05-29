@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 
 type InputBoxType = {
 	Icon?: (props: React.ComponentProps<"svg">) => JSX.Element;
@@ -10,6 +10,9 @@ type InputBoxType = {
 	name: string;
 	onIconClick?: () => void;
 	textArea?: boolean;
+	autoFocus?: boolean;
+	refInput?: React.RefObject<HTMLInputElement>;
+	refTextArea?: React.RefObject<HTMLTextAreaElement>;
 };
 
 const InputBox = (props: InputBoxType) => {
@@ -23,6 +26,8 @@ const InputBox = (props: InputBoxType) => {
 		name,
 		onIconClick,
 		textArea = false,
+		refInput,
+		refTextArea,
 	} = props;
 
 	return (
@@ -36,6 +41,7 @@ const InputBox = (props: InputBoxType) => {
 			<div className="mt-1 relative rounded-md shadow-sm border">
 				{textArea ? (
 					<textarea
+						ref={refTextArea}
 						rows={4}
 						name={name}
 						value={input}
@@ -45,6 +51,7 @@ const InputBox = (props: InputBoxType) => {
 					/>
 				) : (
 					<input
+						ref={refInput}
 						type={type}
 						name={name}
 						value={input}

@@ -24,6 +24,7 @@ export const GET_ALL_POSTS = gql`
 			}
 			subreddit_id
 			username
+			topic
 			title
 			comments {
 				created_at
@@ -39,6 +40,7 @@ export const GET_ALL_POSTS = gql`
 				upvote
 				username
 			}
+			topic
 		}
 	}
 `;
@@ -72,6 +74,7 @@ export const GET_ALL_POSTS_BY_TOPIC = gql`
 				upvote
 				username
 			}
+			topic
 		}
 	}
 `;
@@ -105,6 +108,7 @@ export const GET_ALL_POSTS_BY_SUBREDDIT_TOPIC = gql`
 				upvote
 				username
 			}
+			topic
 		}
 	}
 `;
@@ -148,6 +152,31 @@ export const GET_POST_BY_POST_ID = gql`
 				upvote
 				username
 			}
+			topic
+		}
+	}
+`;
+
+export const GET_VOTES_BY_POST_ID = gql`
+	query getVotesByPostId($post_id: ID!) {
+		getVotesByPostId(post_id: $post_id) {
+			created_at
+			id
+			post_id
+			upvote
+			username
+		}
+	}
+`;
+
+export const GET_COMMENTS_BY_POST_ID = gql`
+	query getCommentsByPostId($post_id: ID!) {
+		getCommentsByPostId(post_id: $post_id) {
+			created_at
+			id
+			post_id
+			text
+			username
 		}
 	}
 `;

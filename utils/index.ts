@@ -1,4 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
+import axios from "axios";
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -11,7 +12,7 @@ export function classNames(...classes: string[]) {
 
 export const capitalize = (name: string) => {
 	if (!name) {
-		return null;
+		return "";
 	}
 	return name
 		.split(" ")
@@ -52,3 +53,16 @@ export const getAgoDate = (date: string | undefined): string => {
 
 	return "";
 };
+
+export const revalidate = async (path: string) => {
+	const { data } = await axios.get(`${DOMAIN}/api/revalidate`, {
+		params: {
+			secret: process.env.NEXT_PUBLIC_REVALIDATE_TOKEN,
+			path: path,
+		},
+	});
+};
+
+export const DOMAIN = process.env.NEXT_PUBLIC_VERCEL_ENV
+	? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+	: "http://localhost:3000";

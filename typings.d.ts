@@ -31,4 +31,5 @@ type Post = {
 	votes: Vote[];
 	comments: Comments[];
 	subreddit: Subreddit[];
+	topic: string;
 };

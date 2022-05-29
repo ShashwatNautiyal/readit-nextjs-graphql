@@ -1,25 +1,20 @@
-import { DocumentNode, useMutation } from "@apollo/client";
+import { DocumentNode, useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdArrowDropDown, MdArrowDropUp } from "react-icons/md";
 import { ADD_VOTE } from "../../graphql/mutations";
-import { getAgoDate } from "../../utils";
+import { GET_VOTES_BY_POST_ID } from "../../graphql/queries";
+import { getAgoDate, revalidate } from "../../utils";
+const TimeAgo = dynamic(() => import("./TimeAgo"), { ssr: false });
 
-const Feed = ({
-	posts,
-	refetchQueries,
-}: {
-	posts: Post[] | undefined;
-	refetchQueries: [DocumentNode, string];
-}) => {
+const Feed = ({ posts }: { posts: Post[] | undefined }) => {
 	return (
 		<div className="w-full divide-y divide-gray-200 md:border border-t border-b md:mt-10 mt-5">
 			{posts?.length !== 0 ? (
-				posts?.map((post) => (
-					<FeedRow key={post.id} post={post} refetchQueries={refetchQueries} />
-				))
+				posts?.map((post) => <FeedRow key={post.id} post={post} />)
 			) : (
 				<div>
 					<p className="p-7">Nothing Found</p>
@@ -29,30 +24,39 @@ const Feed = ({
 	);
 };
 
-const FeedRow = ({
-	post,
-	refetchQueries,
-}: {
-	post: Post;
-	refetchQueries: [DocumentNode, string];
-}) => {
+const FeedRow = ({ post }: { post: Post }) => {
 	const { data: session } = useSession();
 	const [addVote] = useMutation(ADD_VOTE, {
-		refetchQueries: refetchQueries,
+		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
 	});
 
-	const isUpvoted = post?.votes.find((item) => item.username === session?.user?.name)?.upvote;
+	const { data: getVotesByPostId, loading: isLoading } = useQuery(GET_VOTES_BY_POST_ID, {
+		variables: {
+			post_id: post.id,
+		},
+	});
 
-	const handleVote = (isUpvote: boolean) => {
+	const votes: Vote[] | undefined = isLoading ? post.votes : getVotesByPostId?.getVotesByPostId;
+
+	const isUpvoted = votes?.find((item) => item.username === session?.user?.name)?.upvote;
+
+	const handleVote = async (isUpvote: boolean) => {
 		if (!session || isUpvoted) return;
 
-		addVote({
+		const { data } = await addVote({
 			variables: {
 				post_id: post.id,
 				username: session?.user?.name,
 				upvote: isUpvote,
 			},
 		});
+
+		if (data) {
+			revalidate(`/post/${post.id}`);
+			revalidate(`/subreddit/${post.subreddit[0].topic}`);
+			revalidate(`/${post.topic}`);
+			revalidate(`/`);
+		}
 	};
 
 	return (
@@ -65,7 +69,7 @@ const FeedRow = ({
 					} h-10 w-10 cursor-pointer`}
 				/>
 				<h2 className="text-gray-500 -my-2">
-					{post.votes.reduce((acc, curr) => {
+					{votes?.reduce((acc, curr) => {
 						if (curr.upvote) {
 							acc = acc + 1;
 						} else acc = acc - 1;
@@ -92,8 +96,8 @@ const FeedRow = ({
 										: "text-gray-300 hover:text-gray-400"
 								} h-10 w-10 cursor-pointer -my-2`}
 							/>
-							<h2 className="text-gray-500 -my-2">
-								{post.votes.reduce((acc, curr) => {
+							<h2 className="text-gray-500 -my-2 text-sm font-medium">
+								{votes?.reduce((acc, curr) => {
 									if (curr.upvote) {
 										acc = acc + 1;
 									} else acc = acc - 1;
@@ -119,7 +123,7 @@ const FeedRow = ({
 									alt=""
 								/>
 								<h3 className="text-red-500">{post.username}</h3>
-								<time className="text-gray-400">{getAgoDate(post.created_at)}</time>
+								<TimeAgo time={post.created_at} />
 							</div>
 						</div>
 					</div>

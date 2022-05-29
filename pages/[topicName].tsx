@@ -1,30 +1,84 @@
 import {
-	GetServerSideProps,
 	GetServerSidePropsContext,
+	GetStaticPaths,
+	GetStaticPropsContext,
 	InferGetServerSidePropsType,
-	PreviewData,
+	InferGetStaticPropsType,
 } from "next";
 import { NextSeo } from "next-seo";
-import { useRouter } from "next/router";
-import { ParsedUrlQuery } from "querystring";
 import React from "react";
+import client from "../apollo-client";
 import HomeContainer from "../components/HomeContainer";
-import { capitalize } from "../utils";
+import { GET_ALL_POSTS_BY_TOPIC } from "../graphql/queries";
+import { capitalize, DOMAIN } from "../utils";
 
-const TopicsPage = ({ query }: InferGetServerSidePropsType<typeof getServerSideProps>) => {
+const TopicsPage = ({ posts, topicName }: InferGetStaticPropsType<typeof getStaticProps>) => {
 	return (
 		<>
 			<NextSeo
-				title={`${capitalize(query.topicName as string)}`}
-				canonical={`${process.env.NEXT_VERCEL_DOMAIN}/${query}`}
+				title={`Topic | ${capitalize(topicName as string)}`}
+				canonical={`${DOMAIN}/subreddit/${topicName}`}
+				openGraph={{
+					url: `${DOMAIN}/subreddit/${topicName}`,
+					title: `Topic | ${capitalize(topicName as string)}`,
+					images: [
+						{
+							url: `https://avatars.dicebear.com/api/initials/${topicName}.svg`,
+						},
+					],
+				}}
 			/>
-			<HomeContainer topicName={query.topicName} />
+			<HomeContainer posts={posts} topicName={topicName} />
 		</>
 	);
 };
 
-export const getServerSideProps = async ({ query, resolvedUrl }: GetServerSidePropsContext) => {
-	return { props: { query } };
+export const getStaticPaths: GetStaticPaths = async () => {
+	// Get the paths we want to pre-render based on posts
+	const paths = navigations.map((nav) => ({
+		params: { topicName: nav.href },
+	}));
+
+	return { paths, fallback: "blocking" };
 };
+
+export const getStaticProps = async ({ params }: GetStaticPropsContext) => {
+	const { data: getPostListByTopic } = await client.query({
+		query: GET_ALL_POSTS_BY_TOPIC,
+		variables: {
+			topic: params?.topicName,
+		},
+	});
+
+	return {
+		props: {
+			topicName: params?.topicName,
+			posts: getPostListByTopic.getPostListByTopic as Post[],
+		},
+	};
+};
+
+const navigations = [
+	{
+		name: "Hot",
+		href: "hot",
+	},
+	{
+		name: "New",
+		href: "new",
+	},
+	{
+		name: "Controversial",
+		href: "controversial",
+	},
+	{
+		name: "Rising",
+		href: "rising",
+	},
+	{
+		name: "Top",
+		href: "top",
+	},
+];
 
 export default TopicsPage;
