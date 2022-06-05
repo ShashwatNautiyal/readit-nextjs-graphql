@@ -3,15 +3,10 @@ import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import { MdArrowDropDown, MdArrowDropUp, MdOutlineKeyboardBackspace } from "react-icons/md";
 import { ADD_COMMENT, ADD_VOTE } from "../graphql/mutations";
-import {
-	GET_COMMENTS_BY_POST_ID,
-	GET_POST_BY_POST_ID,
-	GET_VOTES_BY_POST_ID,
-} from "../graphql/queries";
-import { getAgoDate, revalidate } from "../utils";
+import { GET_COMMENTS_BY_POST_ID, GET_VOTES_BY_POST_ID } from "../graphql/queries";
+import { revalidate } from "../utils";
 import ButtonPrimary from "./reusable/ButtonPrimary";
 import ButtonSecondry from "./reusable/ButtonSecondry";
 import InputBox from "./reusable/InputBox";

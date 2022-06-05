@@ -28,7 +28,7 @@ const Header = () => {
 	const [signUpModalOpen, setSignUpModalOpen] = useState(false);
 	const [creatPostModalOpen, setCreatPostModalOpen] = useState(false);
 
-	const { data: session } = useSession();
+	const { data: session, status } = useSession();
 	const { setMenuOpen } = useStore();
 
 	return (
@@ -73,7 +73,7 @@ const Header = () => {
 				<FaComment className="text-gray-400/80 h-6 w-6 md:block hidden" />
 				<FaBell className="text-gray-400/80 h-6 w-6 md:block hidden" />
 
-				{!session ? (
+				{status === "unauthenticated" && (
 					<>
 						<ButtonSecondry
 							size="small"
@@ -86,7 +86,9 @@ const Header = () => {
 							onClick={() => setSignUpModalOpen(true)}
 						/>
 					</>
-				) : (
+				)}
+
+				{status === "authenticated" && (
 					<>
 						<ButtonPrimary
 							size="small"
