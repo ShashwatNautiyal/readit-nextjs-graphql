@@ -139,7 +139,6 @@ const FeedRow = ({ post }: { post: Post }) => {
 								className="sm:h-[60px] h-[300px] rounded object-cover sm:w-[100px] w-screen max-h-[400px] relative"
 							>
 								<Image
-									priority
 									src={post.media}
 									className="rounded"
 									layout="fill"
