@@ -26,9 +26,7 @@ const Feed = ({ posts }: { posts: Post[] | undefined }) => {
 
 const FeedRow = ({ post }: { post: Post }) => {
 	const { data: session } = useSession();
-	const [addVote] = useMutation(ADD_VOTE, {
-		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
-	});
+	const [addVote] = useMutation(ADD_VOTE);
 
 	const { data: getVotesByPostId, loading: isLoading } = useQuery(GET_VOTES_BY_POST_ID, {
 		variables: {

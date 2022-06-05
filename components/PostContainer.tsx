@@ -41,13 +41,9 @@ const PostContainer = ({ post }: { post: Post }) => {
 		}
 	);
 
-	const [addComment] = useMutation(ADD_COMMENT, {
-		refetchQueries: [GET_COMMENTS_BY_POST_ID, "getCommentsByPostId"],
-	});
+	const [addComment] = useMutation(ADD_COMMENT);
 
-	const [addVote] = useMutation(ADD_VOTE, {
-		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
-	});
+	const [addVote] = useMutation(ADD_VOTE);
 
 	const votes: Vote[] | undefined = isVotesLoading
 		? post.votes
@@ -63,7 +59,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 		if (!comment) return;
 		setCommentLoading(true);
 
-		const { data, errors } = await addComment({
+		const { data } = await addComment({
 			variables: {
 				post_id: post.id,
 				username: session?.user?.name,
@@ -271,7 +267,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 										alt=""
 									/>
 									<h2 className="text-red-500">{item?.username}</h2>
-									<TimeAgo time={post.created_at} />
+									<TimeAgo time={item.created_at} />
 								</div>
 								<h3 className="text-gray-700">{item.text}</h3>
 								<div className="flex gap-6 text-sm">

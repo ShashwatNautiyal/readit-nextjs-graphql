@@ -25,14 +25,16 @@ export const getAgoDate = (date: string | undefined): string => {
 	const post = new Date(date);
 	const curr = new Date();
 
-	if (curr.getFullYear() - post.getFullYear() > 0) {
-		const yearCount = curr.getFullYear() - post.getFullYear();
+	const datesDiff = Math.floor((curr.getTime() - post.getTime()) / (1000 * 60 * 60 * 24));
+
+	if (datesDiff > 365) {
+		const yearCount = Math.floor(datesDiff / 365);
 		return `${yearCount} year${yearCount > 1 ? "s" : ""} ago`;
-	} else if (curr.getMonth() - post.getMonth() > 0) {
-		const monthCount = curr.getMonth() - post.getMonth();
+	} else if (datesDiff > 30) {
+		const monthCount = Math.floor(datesDiff / 30);
 		return `${monthCount} month${monthCount > 1 ? "s" : ""} ago`;
-	} else if (curr.getDate() - post.getDate() > 0) {
-		const dateCount = curr.getDate() - post.getDate();
+	} else if (datesDiff > 0) {
+		const dateCount = datesDiff;
 		return `${dateCount} day${dateCount > 1 ? "s" : ""} ago`;
 	} else if (curr.getTime() - post.getTime() > 0) {
 		const timeCount = curr.getTime() - post.getTime();
