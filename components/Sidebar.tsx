@@ -41,14 +41,12 @@ const Sidebar = () => {
 					{navigations.map((item) => (
 						<Link key={item.name} href={item.href}>
 							<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
-								<span className="h-6 w-6 relative flex-shrink-0">
-									<Image
-										alt={item.name}
-										layout="fill"
-										src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg
-                                    `}
-									/>
-								</span>
+								<img
+									src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg
+                                `}
+									className="h-6 w-6"
+									alt={item.name}
+								/>
 
 								<span className="font-semibold text-sm w-full">{item.name}</span>
 							</a>
@@ -62,14 +60,12 @@ const Sidebar = () => {
 					{subreddits?.slice(0, 6)?.map((item) => (
 						<Link passHref key={item.id} href={`/subreddit/${item.topic}`}>
 							<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
-								<span className="h-6 w-6 rounded-full border relative flex-shrink-0">
-									<Image
-										layout="fill"
-										alt={item.topic}
-										src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
-										className="rounded-full"
-									/>
-								</span>
+								<img
+									src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
+									className="h-6 w-6 rounded-full border"
+									alt={item.topic}
+								/>
+
 								<span className="font-semibold text-sm w-full">r/{item.topic}</span>
 							</a>
 						</Link>
@@ -181,13 +177,11 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 												onClick={() => setMenuOpen(false)}
 												className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80"
 											>
-												<span className="h-6 w-6 relative flex-shrink-0">
-													<Image
-														alt={item.name}
-														src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
-														layout="fill"
-													/>
-												</span>
+												<img
+													src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
+													className="h-6 w-6"
+													alt={item.name}
+												/>
 
 												<span className="font-semibold text-sm w-full">
 													{item.name}
@@ -212,14 +206,12 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 												onClick={() => setMenuOpen(false)}
 												className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80"
 											>
-												<span className="h-6 w-6 rounded-full border relative flex-shrink-0">
-													<Image
-														layout="fill"
-														alt={item.topic}
-														src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
-														className="rounded-full"
-													/>
-												</span>
+												<img
+													src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
+													className="h-6 w-6 rounded-full border"
+													alt={item.topic}
+												/>
+
 												<span className="font-semibold text-sm w-full">
 													r/{item.topic}
 												</span>

@@ -118,14 +118,11 @@ const FeedRow = ({ post }: { post: Post }) => {
 						<div className="flex flex-col gap-3">
 							<h2>{post.title}</h2>
 							<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
-								<div className="h-6 w-6 rounded-full border relative">
-									<Image
-										src={`https://avatars.dicebear.com/api/open-peeps/${post.username}.svg`}
-										alt={post.username}
-										className="rounded-full"
-										layout="fill"
-									/>
-								</div>
+								<img
+									className="h-6 w-6 rounded-full border"
+									src={`https://avatars.dicebear.com/api/open-peeps/${post.username}.svg`}
+									alt={post.username}
+								/>
 
 								<h3 className="text-red-500">{post.username}</h3>
 								<TimeAgo time={post.created_at} />

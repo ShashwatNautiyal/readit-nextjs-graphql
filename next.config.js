@@ -2,7 +2,7 @@
 const nextConfig = {
 	reactStrictMode: true,
 	images: {
-		domains: ["avatars.dicebear.com", "ryfrttouaibbjbysbzoy.supabase.co"],
+		domains: ["ryfrttouaibbjbysbzoy.supabase.co"],
 		dangerouslyAllowSVG: true,
 		contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
 	},

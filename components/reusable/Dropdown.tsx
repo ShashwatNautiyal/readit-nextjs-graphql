@@ -80,13 +80,11 @@ export default function DropdownProps({
 												<>
 													<div className="flex items-center">
 														{option.imgUrl && (
-															<div className="h-6 w-6 flex-shrink-0 rounded-full relative">
-																<Image
-																	layout="fill"
-																	src={option.imgUrl}
-																	alt={option.value}
-																/>
-															</div>
+															<img
+																src={option.imgUrl}
+																alt={option.value}
+																className="h-6 w-6 flex-shrink-0 rounded-full"
+															/>
 														)}
 														<span
 															className={classNames(
@@ -132,13 +130,11 @@ export default function DropdownProps({
 										>
 											{({ active, selected }) => (
 												<>
-													<div className="h-6 w-6 flex-shrink-0 rounded-full relative">
-														<Image
-															src={`https://avatars.dicebear.com/api/initials/${query}.svg`}
-															layout="fill"
-															alt={query}
-														/>
-													</div>
+													<img
+														src={`https://avatars.dicebear.com/api/initials/${query}.svg`}
+														alt={query}
+														className="h-6 w-6 flex-shrink-0 rounded-full"
+													/>
 
 													{query}
 												</>

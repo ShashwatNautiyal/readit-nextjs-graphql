@@ -33,14 +33,12 @@ const Subreddit = ({ posts, topic }: InferGetStaticPropsType<typeof getStaticPro
 			<div className="lg:w-10/12 md:w-11/12 max-w-7xl md:my-10 my-5 w-full mx-auto">
 				<div className="flex justify-between md:px-0 px-2">
 					<div className="flex items-center gap-2">
-						<div className="h-10 w-10 rounded-full border relative">
-							<Image
-								layout="fill"
-								className="rounded-full"
-								src={`https://avatars.dicebear.com/api/initials/${topic}.svg`}
-								alt={topic as string}
-							/>
-						</div>
+						<img
+							className="h-10 w-10 rounded-full border"
+							src={`https://avatars.dicebear.com/api/initials/${topic}.svg`}
+							alt={topic as string}
+						/>
+
 						<h1 className="text-xl font-semibold">Welcome to r/{topic} subreddit</h1>
 					</div>
 					<div className="flex gap-2">

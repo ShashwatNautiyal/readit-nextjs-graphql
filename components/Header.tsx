@@ -22,7 +22,6 @@ import { classNames, revalidate, supabase } from "../utils";
 import Dropdown from "./reusable/Dropdown";
 import { useStore } from "../zustand";
 import { useRouter } from "next/router";
-import NextImage from "next/image";
 
 const Header = () => {
 	const [signInModalOpen, setSignInModalOpen] = useState(false);
@@ -100,15 +99,11 @@ const Header = () => {
 							{({ open }) => (
 								<>
 									<Popover.Button className="flex items-center gap-2">
-										<div className="h-8 w-8 rounded-full border relative">
-											<NextImage
-												layout="fill"
-												objectFit="contain"
-												className="rounded-full"
-												src={`https://avatars.dicebear.com/api/open-peeps/${session?.user?.name}.svg`}
-												alt={session?.user?.name ?? ""}
-											/>
-										</div>
+										<img
+											className="h-8 w-8 rounded-full border"
+											src={`https://avatars.dicebear.com/api/open-peeps/${session?.user?.name}.svg`}
+											alt={session.user?.name ?? ""}
+										/>
 										<span className="text-gray-500 font-semibold text-sm md:block hidden">
 											{session.user?.name}
 										</span>
