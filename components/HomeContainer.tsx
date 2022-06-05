@@ -1,5 +1,3 @@
-import { useQuery } from "@apollo/client";
-import Image from "next/image";
 import React from "react";
 import { BsGridFill } from "react-icons/bs";
 import { FaThList } from "react-icons/fa";
@@ -19,9 +17,9 @@ const HomeContainer = (props: HomeProps) => {
 					<img
 						className="h-10 w-10 rounded-full"
 						src={`https://avatars.dicebear.com/api/bottts/${capitalize(
-							topicName as string
+							topicName ? (topicName as string) : "All"
 						)}.svg`}
-						alt={topicName as string}
+						alt={topicName ? (topicName as string) : "All"}
 					/>
 
 					<h1 className="text-xl capitalize font-semibold">

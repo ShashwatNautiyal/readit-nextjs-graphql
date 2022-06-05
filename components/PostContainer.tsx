@@ -186,6 +186,7 @@ const PostContainer = ({ post }: { post: Post }) => {
 					{post.media.includes("ryfrttouaibbjbysbzoy.supabase.co") ? (
 						<div className="h-full sm:min-h-[200px] min-h-[300px] w-screen sm:max-w-[250px] object-cover relative">
 							<Image
+								priority
 								objectFit="cover"
 								layout="fill"
 								src={post?.media}
