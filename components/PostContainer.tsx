@@ -41,9 +41,13 @@ const PostContainer = ({ post }: { post: Post }) => {
 		}
 	);
 
-	const [addComment] = useMutation(ADD_COMMENT);
+	const [addComment] = useMutation(ADD_COMMENT, {
+		refetchQueries: [GET_COMMENTS_BY_POST_ID, "getCommentsByPostId"],
+	});
 
-	const [addVote] = useMutation(ADD_VOTE);
+	const [addVote] = useMutation(ADD_VOTE, {
+		refetchQueries: [GET_VOTES_BY_POST_ID, "getVotesByPostId"],
+	});
 
 	const votes: Vote[] | undefined = isVotesLoading
 		? post.votes
