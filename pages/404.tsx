@@ -1,5 +1,6 @@
 import { NextPage } from "next";
 import { NextSeo } from "next-seo";
+import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import ButtonPrimary from "../components/reusable/ButtonPrimary";
@@ -24,7 +25,14 @@ const Error: NextPage = () => {
 						</a>
 					</Link>
 				</div>
-				<img className="lg:max-w-sm  max-w-xs w-screen" src="/page-not-found.png" alt="" />
+				<div className="lg:max-w-sm  max-w-xs w-screen relative h-full">
+					<Image
+						layout="fill"
+						objectFit="contain"
+						src="/page-not-found.png"
+						alt={"page not found error"}
+					/>
+				</div>
 			</div>
 		</>
 	);

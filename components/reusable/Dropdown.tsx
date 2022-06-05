@@ -3,6 +3,7 @@ import { FiCheck } from "react-icons/fi";
 import { HiSelector } from "react-icons/hi";
 import { Combobox } from "@headlessui/react";
 import { classNames } from "../../utils";
+import Image from "next/image";
 
 type DropdownProps = {
 	label: string;
@@ -79,11 +80,13 @@ export default function DropdownProps({
 												<>
 													<div className="flex items-center">
 														{option.imgUrl && (
-															<img
-																src={option.imgUrl}
-																alt=""
-																className="h-6 w-6 flex-shrink-0 rounded-full"
-															/>
+															<div className="h-6 w-6 flex-shrink-0 rounded-full relative">
+																<Image
+																	layout="fill"
+																	src={option.imgUrl}
+																	alt={option.value}
+																/>
+															</div>
 														)}
 														<span
 															className={classNames(
@@ -129,11 +132,14 @@ export default function DropdownProps({
 										>
 											{({ active, selected }) => (
 												<>
-													<img
-														src={`https://avatars.dicebear.com/api/initials/${query}.svg`}
-														alt=""
-														className="h-6 w-6 flex-shrink-0 rounded-full"
-													/>
+													<div className="h-6 w-6 flex-shrink-0 rounded-full relative">
+														<Image
+															src={`https://avatars.dicebear.com/api/initials/${query}.svg`}
+															layout="fill"
+															alt={query}
+														/>
+													</div>
+
 													{query}
 												</>
 											)}

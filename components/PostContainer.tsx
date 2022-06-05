@@ -1,6 +1,7 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { MdArrowDropDown, MdArrowDropUp, MdOutlineKeyboardBackspace } from "react-icons/md";
@@ -138,27 +139,35 @@ const PostContainer = ({ post }: { post: Post }) => {
 					<div className="flex gap-2 py-3">
 						<div className="flex flex-col justify-center items-start gap-3 sm:py-5 py-0 px-2">
 							<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
-								<img
-									className="h-6 w-6 rounded-full border"
-									src={`https://avatars.dicebear.com/api/open-peeps/${post?.username}.svg`}
-									alt=""
-								/>
+								<div className="h-6 w-6 rounded-full border relative">
+									<Image
+										className="rounded-full"
+										layout="fill"
+										src={`https://avatars.dicebear.com/api/open-peeps/${post?.username}.svg`}
+										alt={post?.username}
+									/>
+								</div>
 								<h3 className="text-red-500">{post?.username}</h3>
 								<TimeAgo time={post.created_at} />
 							</div>
 							<h1 className="text-2xl">{post?.title}</h1>
 							<div className="flex items-center gap-2">
 								<div className="flex -space-x-1 relative z-0 overflow-hidden">
-									{usersLiked?.map((item, index) => (
-										<img
+									{usersLiked?.slice(0, 5).map((item, index) => (
+										<div
 											key={item.id}
 											style={{
 												zIndex: `${1000 - index}`,
 											}}
-											className={`relative inline-block h-6 w-6 rounded-full ring-2 ring-white border bg-white`}
-											src={`https://avatars.dicebear.com/api/open-peeps/${item?.username}.svg`}
-											alt=""
-										/>
+											className="relative flex-shrink-0 inline-block h-6 w-6 rounded-full ring-2 ring-white border bg-white"
+										>
+											<Image
+												layout="fill"
+												className={`rounded-full`}
+												src={`https://avatars.dicebear.com/api/open-peeps/${item?.username}.svg`}
+												alt={item.username}
+											/>
+										</div>
 									))}
 								</div>
 								{usersLiked && usersLiked.length > 0 && (
@@ -182,11 +191,22 @@ const PostContainer = ({ post }: { post: Post }) => {
 							</div>
 						</div>
 					</div>
-					<img
-						className="h-full w-screen max-h-[400px] sm:max-w-[250px] object-cover"
-						src={post?.media}
-						alt=""
-					/>
+					{post.media.includes("ryfrttouaibbjbysbzoy.supabase.co") ? (
+						<div className="h-full sm:min-h-[200px] min-h-[300px] w-screen sm:max-w-[250px] object-cover relative">
+							<Image
+								objectFit="cover"
+								layout="fill"
+								src={post?.media}
+								alt={post.title}
+							/>
+						</div>
+					) : (
+						<img
+							className="h-full w-screen max-h-[400px] sm:max-w-[250px] object-cover"
+							src={post?.media}
+							alt={post.title}
+						/>
+					)}
 				</div>
 			</div>
 
@@ -217,11 +237,15 @@ const PostContainer = ({ post }: { post: Post }) => {
 					{commentOpen && (
 						<form onSubmit={handleComment} className="my-3 flex flex-col gap-1">
 							<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
-								<img
-									className="h-6 w-6 rounded-full border"
-									src={`https://avatars.dicebear.com/api/open-peeps/${session?.user?.name}.svg`}
-									alt=""
-								/>
+								<div className="h-6 w-6 rounded-full border relative">
+									<Image
+										className="rounded-full"
+										layout="fill"
+										src={`https://avatars.dicebear.com/api/open-peeps/${session?.user?.name}.svg`}
+										alt={session?.user?.name ?? ""}
+									/>
+								</div>
+
 								<h3 className="text-red-500">{session?.user?.name}</h3>
 							</div>
 							<InputBox
@@ -260,11 +284,14 @@ const PostContainer = ({ post }: { post: Post }) => {
 							</div>
 							<div className="flex flex-col gap-1">
 								<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
-									<img
-										className="h-6 w-6 rounded-full border"
-										src={`https://avatars.dicebear.com/api/open-peeps/${item?.username}.svg`}
-										alt=""
-									/>
+									<div className="h-6 w-6 rounded-full border relative">
+										<Image
+											className="rounded-full"
+											layout="fill"
+											src={`https://avatars.dicebear.com/api/open-peeps/${item?.username}.svg`}
+											alt={item?.username}
+										/>
+									</div>
 									<h2 className="text-red-500">{item?.username}</h2>
 									<TimeAgo time={item.created_at} />
 								</div>

@@ -9,6 +9,7 @@ import { GET_ALL_SUBREDDIT } from "../graphql/queries";
 import Link from "next/link";
 import { Dialog, Menu, Transition } from "@headlessui/react";
 import { useStore } from "../zustand";
+import Image from "next/image";
 
 const Sidebar = () => {
 	const { data } = useQuery(GET_ALL_SUBREDDIT);
@@ -21,7 +22,14 @@ const Sidebar = () => {
 			<div className="lg:w-[300px] md:w-[200px] md:block hidden bg-gray-100/30 border-r h-screen sticky top-0 overflow-y-auto">
 				<Link href={"/"} passHref>
 					<a className="flex items-center gap-2 px-4 py-6">
-						<img className="w-12 h-w-12 rounded-full" src="/logo.png" alt="" />
+						<span className="w-12 h-12 rounded-full relative">
+							<Image
+								className="rounded-full"
+								layout="fill"
+								src={`/logo.png`}
+								alt={"readit logo"}
+							/>
+						</span>
 						<h1 className="font-semibold text-xl">
 							Read<span className="text-red-500">it</span>
 						</h1>
@@ -33,11 +41,14 @@ const Sidebar = () => {
 					{navigations.map((item) => (
 						<Link key={item.name} href={item.href}>
 							<a className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
-								<img
-									src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg
-                                `}
-									className="h-6 w-6"
-								/>
+								<span className="h-6 w-6 relative flex-shrink-0">
+									<Image
+										alt={item.name}
+										layout="fill"
+										src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg
+                                    `}
+									/>
+								</span>
 
 								<span className="font-semibold text-sm w-full">{item.name}</span>
 							</a>
@@ -51,10 +62,14 @@ const Sidebar = () => {
 					{subreddits?.slice(0, 6)?.map((item) => (
 						<Link passHref key={item.id} href={`/subreddit/${item.topic}`}>
 							<a className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80">
-								<img
-									src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
-									className="h-6 w-6 rounded-full border"
-								/>
+								<span className="h-6 w-6 rounded-full border relative flex-shrink-0">
+									<Image
+										layout="fill"
+										alt={item.topic}
+										src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
+										className="rounded-full"
+									/>
+								</span>
 								<span className="font-semibold text-sm w-full">r/{item.topic}</span>
 							</a>
 						</Link>
@@ -141,11 +156,15 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 										onClick={() => setMenuOpen(false)}
 										className="flex items-center gap-2 px-4 py-3"
 									>
-										<img
-											className="w-12 h-w-12 rounded-full"
-											src="/logo.png"
-											alt=""
-										/>
+										<div className="w-12 h-12 rounded-full relative flex-shrink-0">
+											<Image
+												className="rounded-full"
+												layout="fill"
+												src={`/logo.png`}
+												alt={"readit logo"}
+											/>
+										</div>
+
 										<h1 className="font-semibold text-xl">
 											Read<span className="text-red-500">it</span>
 										</h1>
@@ -162,10 +181,13 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 												onClick={() => setMenuOpen(false)}
 												className="flex items-center px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80"
 											>
-												<img
-													src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
-													className="h-6 w-6"
-												/>
+												<span className="h-6 w-6 relative flex-shrink-0">
+													<Image
+														alt={item.name}
+														src={`https://avatars.dicebear.com/api/bottts/${item.name}.svg`}
+														layout="fill"
+													/>
+												</span>
 
 												<span className="font-semibold text-sm w-full">
 													{item.name}
@@ -180,7 +202,7 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 								</h2>
 								<div className="border-t border-gray-200 my-1 mx-4"></div>
 								<div className="mt-4">
-									{subreddits?.map((item) => (
+									{subreddits?.slice(0, 6).map((item) => (
 										<Link
 											passHref
 											key={item.id}
@@ -190,10 +212,14 @@ const MobileMenu = ({ subreddits }: { subreddits: Subreddit[] | undefined }) => 
 												onClick={() => setMenuOpen(false)}
 												className="flex px-4 py-3 gap-3 hover:text-gray-900 hover:bg-gray-200 text-gray-500/80"
 											>
-												<img
-													src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
-													className="h-6 w-6 rounded-full border"
-												/>
+												<span className="h-6 w-6 rounded-full border relative flex-shrink-0">
+													<Image
+														layout="fill"
+														alt={item.topic}
+														src={`https://avatars.dicebear.com/api/initials/${item.topic}.svg`}
+														className="rounded-full"
+													/>
+												</span>
 												<span className="font-semibold text-sm w-full">
 													r/{item.topic}
 												</span>

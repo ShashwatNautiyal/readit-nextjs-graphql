@@ -1,6 +1,7 @@
 import { DocumentNode, useMutation, useQuery } from "@apollo/client";
 import { useSession } from "next-auth/react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import { BsThreeDotsVertical } from "react-icons/bs";
@@ -117,26 +118,49 @@ const FeedRow = ({ post }: { post: Post }) => {
 						<div className="flex flex-col gap-3">
 							<h2>{post.title}</h2>
 							<div className="flex flex-row gap-2 text-sm items-center flex-wrap">
-								<img
-									className="h-6 w-6 rounded-full border"
-									src={`https://avatars.dicebear.com/api/open-peeps/${post.username}.svg`}
-									alt=""
-								/>
+								<div className="h-6 w-6 rounded-full border relative">
+									<Image
+										src={`https://avatars.dicebear.com/api/open-peeps/${post.username}.svg`}
+										alt={post.username}
+										className="rounded-full"
+										layout="fill"
+									/>
+								</div>
+
 								<h3 className="text-red-500">{post.username}</h3>
 								<TimeAgo time={post.created_at} />
 							</div>
 						</div>
 					</div>
 					<div className="flex items-center gap-3 md:pr-4 flex-shrink-0">
-						<img
-							style={{
-								boxShadow:
-									"rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px",
-							}}
-							src={post.media}
-							className="sm:h-[60px] rounded object-cover sm:w-[100px] w-screen max-h-[400px]"
-							alt=""
-						/>
+						{post.media.includes("ryfrttouaibbjbysbzoy.supabase.co") ? (
+							<div
+								style={{
+									boxShadow:
+										"rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px",
+								}}
+								className="sm:h-[60px] h-[300px] rounded object-cover sm:w-[100px] w-screen max-h-[400px] relative"
+							>
+								<Image
+									src={post.media}
+									className="rounded"
+									layout="fill"
+									objectFit="cover"
+									alt={post.title}
+								/>
+							</div>
+						) : (
+							<img
+								style={{
+									boxShadow:
+										"rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px",
+								}}
+								src={post.media}
+								className="sm:h-[60px] rounded object-cover sm:w-[100px] w-screen max-h-[400px]"
+								alt={post.title}
+							/>
+						)}
+
 						<BsThreeDotsVertical className="h-6 w-6 text-gray-300 sm:block hidden" />
 					</div>
 				</div>
