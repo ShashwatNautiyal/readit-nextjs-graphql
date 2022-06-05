@@ -64,5 +64,5 @@ export const revalidate = async (path: string) => {
 };
 
 export const DOMAIN = process.env.NEXT_PUBLIC_VERCEL_ENV
-	? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+	? `https://${process.env.NEXT_PUBLIC_SITE_URL}`
 	: "http://localhost:3000";
